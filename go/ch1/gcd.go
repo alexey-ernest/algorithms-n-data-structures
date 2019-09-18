@@ -1,6 +1,6 @@
 package ch1
 
-func gcd(p int, q int) (int) {
+func gcd(p int, q int) int {
 	if q == 0 {
 		return p
 	}
