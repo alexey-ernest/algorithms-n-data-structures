@@ -21,7 +21,7 @@ func (s *Stack) Pop() byte {
 		return byte(0)
 	}
 
-	el, r := s.data[0], s.data[1:]
+	el, r := s.data[len(s.data) - 1], s.data[:len(s.data) - 1]
 	s.data = r
 	return el
 }

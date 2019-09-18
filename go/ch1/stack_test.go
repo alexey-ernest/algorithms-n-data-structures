@@ -18,7 +18,7 @@ func TestPush2NPop(t *testing.T) {
 	s.Push('b')
 
 	got := [2]byte{s.Pop(), s.Pop()}
-	if got != [2]byte{'a', 'b'} {
+	if got != [2]byte{'b', 'a'} {
 		t.Errorf("['a' 'b'] != %+q", got)
 	}
 }
