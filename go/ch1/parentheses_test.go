@@ -36,3 +36,10 @@ func TestBalancedParenthesesEmpty(t *testing.T) {
 		t.Errorf("empty is balanced", input);
 	}
 }
+
+func TestBalancedParenthesesMixedWithSymbols(t *testing.T) {
+	input := "(a + (b - c) / 2)";
+	if !IsBalancedParentheses(input) {
+		t.Errorf("%q is balanced", input);
+	}
+}
