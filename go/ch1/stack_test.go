@@ -2,7 +2,7 @@ package ch1
 
 import "testing"
 
-func TestPushNPop(t *testing.T) {
+func TestPushNPopStack(t *testing.T) {
 	s := new(Stack)
 	s.Push('a')
 
@@ -12,7 +12,7 @@ func TestPushNPop(t *testing.T) {
 	}
 }
 
-func TestPush2NPop(t *testing.T) {
+func TestPush2NPopStack(t *testing.T) {
 	s := new(Stack)
 	s.Push('a')
 	s.Push('b')

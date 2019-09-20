@@ -3,8 +3,8 @@ package ch1
 import "math"
 
 func compute(s string) int {
-	operators := new(Stack)
-	values := new(Stack)
+	operators := new(StackResizingArray)
+	values := new(StackResizingArray)
 
 	for _, c := range s {
 		switch c {
