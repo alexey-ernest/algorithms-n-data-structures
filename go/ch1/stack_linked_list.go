@@ -1,16 +1,16 @@
 package ch1
 
-type node struct {
+type byteNode struct {
 	item byte
-	next *node
+	next *byteNode
 }
 
 type StackLinkedList struct {
-	first *node
+	first *byteNode
 }
 
 func (s *StackLinkedList) Push(c byte) {
-	n := node {
+	n := byteNode {
 		item: c,
 		next: s.first,
 	}
