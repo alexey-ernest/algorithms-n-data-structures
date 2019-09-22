@@ -12,11 +12,11 @@ type QueueLinkedList struct {
 }
 
 func (q *QueueLinkedList) IsEmpty() bool {
-	return q.first == nil;
+	return q.first == nil
 }
 
 func (q *QueueLinkedList) Size() int {
-	return q.n;
+	return q.n
 }
 
 func (q *QueueLinkedList) Enqueue(s string) {
@@ -24,23 +24,23 @@ func (q *QueueLinkedList) Enqueue(s string) {
 		item: s,
 	}
 
-	oldLast := q.last;
-	q.last = &n;
+	oldLast := q.last
+	q.last = &n
 	if q.first == nil {
-		q.first = &n;
+		q.first = &n
 	} else {
-		oldLast.next = &n;
+		oldLast.next = &n
 	}
 
-	q.n += 1;
+	q.n += 1
 }
 
 func (q *QueueLinkedList) Dequeue() string {
-	n := q.first;
-	q.first = n.next;
+	n := q.first
+	q.first = n.next
 	if q.first == nil {
-		q.last = nil;
+		q.last = nil
 	}
-	q.n -= 1;
-	return n.item;
+	q.n -= 1
+	return n.item
 }

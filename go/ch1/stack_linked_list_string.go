@@ -11,11 +11,11 @@ type StackLinkedListString struct {
 }
 
 func (s *StackLinkedListString) IsEmpty() bool {
-	return s.first == nil;
+	return s.first == nil
 }
 
 func (s *StackLinkedListString) Size() int {
-	return s.n;
+	return s.n
 }
 
 func (s *StackLinkedListString) Push(c string) {
@@ -25,12 +25,12 @@ func (s *StackLinkedListString) Push(c string) {
 	}
 
 	s.first = &n
-	s.n += 1;
+	s.n += 1
 }
 
 func (s *StackLinkedListString) Pop() string {
 	n := s.first
 	s.first = n.next
-	s.n -= 1;
+	s.n -= 1
 	return n.item
 }

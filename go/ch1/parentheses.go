@@ -1,37 +1,37 @@
 package ch1
 
 func IsBalancedParentheses(s string) bool {
-	var stack StackLinkedList;
+	var stack StackLinkedList
 	
 	for _, c := range s {
-		chr := byte(c);
+		chr := byte(c)
 
 		switch chr {
 		case '(', '[', '{':
-			stack.Push(chr);
+			stack.Push(chr)
 		case ')', ']', '}':
 			if stack.IsEmpty() {
-				return false;
+				return false
 			}
-			
-			last := stack.Pop();
+
+			last := stack.Pop()
 			
 			switch chr {
 			case ')':
 				if last != '(' {
-					return false;
+					return false
 				}
 			case ']':
 				if last != '[' {
-					return false;
+					return false
 				}
 			case '}':
 				if last != '{' {
-					return false;
+					return false
 				}
 			}
 		}
 	}
 
-	return stack.IsEmpty();
+	return stack.IsEmpty()
 }

@@ -3,43 +3,43 @@ package ch1
 import "testing"
 
 func TestBalancedParenthesesGood(t *testing.T) {
-	input := "[()]{}{[()()]()}";
+	input := "[()]{}{[()()]()}"
 	if !IsBalancedParentheses(input) {
-		t.Errorf("%q should be balanced", input);
+		t.Errorf("%q should be balanced", input)
 	}
 }
 
 func TestBalancedParenthesesBad(t *testing.T) {
-	input := "[(])";
+	input := "[(])"
 	if IsBalancedParentheses(input) {
-		t.Errorf("%q should not be balanced", input);
+		t.Errorf("%q should not be balanced", input)
 	}
 }
 
 func TestBalancedParenthesesOnlyOpen(t *testing.T) {
-	input := "[({";
+	input := "[({"
 	if IsBalancedParentheses(input) {
-		t.Errorf("%q should not be balanced", input);
+		t.Errorf("%q should not be balanced", input)
 	}
 }
 
 func TestBalancedParenthesesOnlyClose(t *testing.T) {
-	input := "})]";
+	input := "})]"
 	if IsBalancedParentheses(input) {
-		t.Errorf("%q should not be balanced", input);
+		t.Errorf("%q should not be balanced", input)
 	}
 }
 
 func TestBalancedParenthesesEmpty(t *testing.T) {
-	input := "";
+	input := ""
 	if !IsBalancedParentheses(input) {
-		t.Errorf("empty is balanced", input);
+		t.Errorf("empty is balanced", input)
 	}
 }
 
 func TestBalancedParenthesesMixedWithSymbols(t *testing.T) {
-	input := "(a + (b - c) / 2)";
+	input := "(a + (b - c) / 2)"
 	if !IsBalancedParentheses(input) {
-		t.Errorf("%q is balanced", input);
+		t.Errorf("%q is balanced", input)
 	}
 }
