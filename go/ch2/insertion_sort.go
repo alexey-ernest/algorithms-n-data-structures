@@ -8,6 +8,8 @@ func (s *InsertionSort) Sort(data Sortable) {
 		for j := i; j > 0; j -= 1 {
 			if data.Less(j, j-1) {
 				data.Swap(j, j-1)
+			} else {
+				break
 			}
 		}
 	}
