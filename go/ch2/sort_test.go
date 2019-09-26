@@ -92,3 +92,42 @@ func BenchmarkInsertionSort10k(b *testing.B) {
 func BenchmarkInsertionSort100k(b *testing.B) {
 	benchmarkInsertionSort(100000, b)
 }
+
+func TestShellSort(t *testing.T) {
+	input := make([]int, 1000)
+	for i := range input {
+		input[i] = int(rand.Int())
+	}
+
+	s := ShellSort{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(input) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkShellSort(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+	s := ShellSort{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkShellSort1k(b *testing.B) {
+	benchmarkShellSort(1000, b)
+}
+
+func BenchmarkShellSort10k(b *testing.B) {
+	benchmarkShellSort(10000, b)
+}
+
+func BenchmarkShellSort100k(b *testing.B) {
+	benchmarkShellSort(100000, b)
+}
