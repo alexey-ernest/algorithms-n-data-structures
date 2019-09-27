@@ -93,6 +93,45 @@ func BenchmarkInsertionSort100k(b *testing.B) {
 	benchmarkInsertionSort(100000, b)
 }
 
+func TestInsertionSortSentinel(t *testing.T) {
+	input := make([]int, 1000)
+	for i := range input {
+		input[i] = int(rand.Int())
+	}
+
+	s := InsertionSortSentinel{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(input) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkInsertionSortSentinel(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+	s := InsertionSortSentinel{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkInsertionSortSentinel1k(b *testing.B) {
+	benchmarkInsertionSortSentinel(1000, b)
+}
+
+func BenchmarkInsertionSortSentinel10k(b *testing.B) {
+	benchmarkInsertionSortSentinel(10000, b)
+}
+
+func BenchmarkInsertionSortSentinel100k(b *testing.B) {
+	benchmarkInsertionSortSentinel(100000, b)
+}
+
 func TestShellSort(t *testing.T) {
 	input := make([]int, 1000)
 	for i := range input {
