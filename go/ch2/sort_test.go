@@ -170,3 +170,58 @@ func BenchmarkShellSort10k(b *testing.B) {
 func BenchmarkShellSort100k(b *testing.B) {
 	benchmarkShellSort(100000, b)
 }
+
+func BenchmarkShellSort1m(b *testing.B) {
+	benchmarkShellSort(1000000, b)
+}
+
+func BenchmarkShellSort10m(b *testing.B) {
+	benchmarkShellSort(10000000, b)
+}
+
+func TestMergeSort(t *testing.T) {
+	input := make([]int, 1000)
+	for i := range input {
+		input[i] = int(rand.Int())
+	}
+
+	s := MergeSort{}
+	s.Sort(input)
+
+	if !validateSort(input) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkMergeSort(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+	s := MergeSort{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(input)
+	}
+}
+
+func BenchmarkMergeSort1k(b *testing.B) {
+	benchmarkMergeSort(1000, b)
+}
+
+func BenchmarkMergeSort10k(b *testing.B) {
+	benchmarkMergeSort(10000, b)
+}
+
+func BenchmarkMergeSort100k(b *testing.B) {
+	benchmarkMergeSort(100000, b)
+}
+
+func BenchmarkMergeSort1m(b *testing.B) {
+	benchmarkMergeSort(1000000, b)
+}
+
+func BenchmarkMergeSort10m(b *testing.B) {
+	benchmarkMergeSort(10000000, b)
+}
