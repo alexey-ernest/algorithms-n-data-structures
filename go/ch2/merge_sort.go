@@ -14,6 +14,11 @@ func sort(a []int, low, high int) {
 	mid := low + (high - low)/2
 	sort(a, low, mid)
 	sort(a, mid + 1, high)
+
+	if a[mid] <= a[mid + 1] {
+		// skip merging as already sorted
+		return
+	}
 	merge(a, low, mid, high)
 }
 
