@@ -24,3 +24,17 @@ func (s SortableInt) Less(i, j int) bool {
 func (s SortableInt) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
+
+type SortableByte []byte
+
+func (s SortableByte) Len() int {
+	return len(s)
+}
+
+func (s SortableByte) Less(i, j int) bool {
+	return s[i] < s[j]
+}
+
+func (s SortableByte) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}

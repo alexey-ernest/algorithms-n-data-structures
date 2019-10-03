@@ -3,17 +3,17 @@ package ch2
 type MergeSort struct {}
 
 func (s *MergeSort) Sort(a []int) {
-	sort(a, 0, len(a) - 1)
+	sort_merge(a, 0, len(a) - 1)
 }
 
-func sort(a []int, low, high int) {
+func sort_merge(a []int, low, high int) {
 	if low >= high {
 		return
 	}
 
 	mid := low + (high - low)/2
-	sort(a, low, mid)
-	sort(a, mid + 1, high)
+	sort_merge(a, low, mid)
+	sort_merge(a, mid + 1, high)
 
 	if a[mid] <= a[mid + 1] {
 		// skip merging as already sorted

@@ -3,11 +3,12 @@ package ch2
 import (
 	"testing"
 	"math/rand"
+	"sort"
 )
 
-func validateSort(data []int) bool {
-	for i := 1; i < len(data); i += 1 {
-		if data[i] < data[i-1] {
+func validateSort(data Sortable) bool {
+	for i := 1; i < data.Len(); i += 1 {
+		if data.Less(i, i-1) {
 			return false
 		}
 	}
@@ -23,7 +24,7 @@ func TestSelectionSort(t *testing.T) {
 	s := SelectionSort{}
 	s.Sort(SortableInt(input))
 
-	if !validateSort(input) {
+	if !validateSort(SortableInt(input)) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
@@ -63,7 +64,7 @@ func TestInsertionSort(t *testing.T) {
 	s := InsertionSort{}
 	s.Sort(SortableInt(input))
 
-	if !validateSort(input) {
+	if !validateSort(SortableInt(input)) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
@@ -102,7 +103,7 @@ func TestInsertionSortSentinel(t *testing.T) {
 	s := InsertionSortSentinel{}
 	s.Sort(SortableInt(input))
 
-	if !validateSort(input) {
+	if !validateSort(SortableInt(input)) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
@@ -141,7 +142,7 @@ func TestShellSort(t *testing.T) {
 	s := ShellSort{}
 	s.Sort(SortableInt(input))
 
-	if !validateSort(input) {
+	if !validateSort(SortableInt(input)) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
@@ -188,7 +189,7 @@ func TestMergeSort(t *testing.T) {
 	s := MergeSort{}
 	s.Sort(input)
 
-	if !validateSort(input) {
+	if !validateSort(SortableInt(input)) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
@@ -225,3 +226,112 @@ func BenchmarkMergeSort1m(b *testing.B) {
 func BenchmarkMergeSort10m(b *testing.B) {
 	benchmarkMergeSort(10000000, b)
 }
+
+func TestQuickSort(t *testing.T) {
+	input := make([]int, 1000)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+
+	s := QuickSort{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(SortableInt(input)) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+
+func TestQuickSortAsc(t *testing.T) {
+	input := make([]int, 1000)
+	last := 0
+	for i := range input {
+		last += rand.Intn(10)
+		input[i] = last
+	}
+
+	s := QuickSort{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(SortableInt(input)) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func TestQuickSortBytes(t *testing.T) {
+	input := []byte{'K', 'R', 'A', 'T', 'E', 'L', 'E', 'P', 'U', 'I', 'M', 'Q', 'C', 'X', 'O', 'S'}
+
+	s := QuickSort{}
+	s.Sort(SortableByte(input))
+
+	if !validateSort(SortableByte(input)) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkQuickSort(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+
+	s := ShellSort{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkQuickSort1k(b *testing.B) {
+	benchmarkQuickSort(1000, b)
+}
+
+func BenchmarkQuickSort10k(b *testing.B) {
+	benchmarkQuickSort(10000, b)
+}
+
+func BenchmarkQuickSort100k(b *testing.B) {
+	benchmarkQuickSort(100000, b)
+}
+
+func BenchmarkQuickSort1m(b *testing.B) {
+	benchmarkQuickSort(1000000, b)
+}
+
+func BenchmarkQuickSort10m(b *testing.B) {
+	benchmarkQuickSort(10000000, b)
+}
+
+func benchmarkNativeSort(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		sort.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkNativeSort1k(b *testing.B) {
+	benchmarkNativeSort(1000, b)
+}
+
+func BenchmarkNativeSort10k(b *testing.B) {
+	benchmarkNativeSort(10000, b)
+}
+
+func BenchmarkNativeSort100k(b *testing.B) {
+	benchmarkNativeSort(100000, b)
+}
+
+func BenchmarkNativeSort1m(b *testing.B) {
+	benchmarkNativeSort(1000000, b)
+}
+
+func BenchmarkNativeSort10m(b *testing.B) {
+	benchmarkNativeSort(10000000, b)
+}
+
