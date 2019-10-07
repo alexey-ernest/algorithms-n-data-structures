@@ -227,6 +227,10 @@ func BenchmarkMergeSort10m(b *testing.B) {
 	benchmarkMergeSort(10000000, b)
 }
 
+func BenchmarkMergeSort50m(b *testing.B) {
+	benchmarkMergeSort(50000000, b)
+}
+
 func TestQuickSort(t *testing.T) {
 	input := make([]int, 1000)
 	for i := range input {
@@ -240,7 +244,6 @@ func TestQuickSort(t *testing.T) {
 		t.Errorf("%+v is not sorted properly", input)
 	}
 }
-
 
 func TestQuickSortAsc(t *testing.T) {
 	input := make([]int, 1000)
@@ -303,6 +306,71 @@ func BenchmarkQuickSort10m(b *testing.B) {
 	benchmarkQuickSort(10000000, b)
 }
 
+func TestQuickSort3Asc(t *testing.T) {
+	input := make([]int, 1000)
+	last := 0
+	for i := range input {
+		last += rand.Intn(10)
+		input[i] = last
+	}
+
+	s := QuickSort3{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(SortableInt(input)) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func TestQuickSort3Bytes(t *testing.T) {
+	input := []byte{'R', 'B', 'W', 'W', 'R', 'W', 'B', 'R', 'R', 'W', 'B', 'R'}
+
+	s := QuickSort3{}
+	s.Sort(SortableByte(input))
+
+	if !validateSort(SortableByte(input)) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkQuickSort3(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Intn(10)
+	}
+
+	s := ShellSort{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkQuickSort3_1k(b *testing.B) {
+	benchmarkQuickSort3(1000, b)
+}
+
+func BenchmarkQuickSort3_10k(b *testing.B) {
+	benchmarkQuickSort3(10000, b)
+}
+
+func BenchmarkQuickSort3_100k(b *testing.B) {
+	benchmarkQuickSort3(100000, b)
+}
+
+func BenchmarkQuickSort3_1m(b *testing.B) {
+	benchmarkQuickSort3(1000000, b)
+}
+
+func BenchmarkQuickSort3_10m(b *testing.B) {
+	benchmarkQuickSort3(10000000, b)
+}
+
+func BenchmarkQuickSort3_50m(b *testing.B) {
+	benchmarkQuickSort3(50000000, b)
+}
+
 func benchmarkNativeSort(n int, b *testing.B) {
 	input := make([]int, n)
 	for i := range input {
@@ -333,5 +401,9 @@ func BenchmarkNativeSort1m(b *testing.B) {
 
 func BenchmarkNativeSort10m(b *testing.B) {
 	benchmarkNativeSort(10000000, b)
+}
+
+func BenchmarkNativeSort50m(b *testing.B) {
+	benchmarkNativeSort(50000000, b)
 }
 
