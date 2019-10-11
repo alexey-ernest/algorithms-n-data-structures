@@ -1,8 +1,11 @@
 package ch2
 
 import (
+	"fmt"
 	"math/rand"
+	"sync"
 	"testing"
+	"time"
 )
 
 func TestMaxPQAsc(t *testing.T) {
@@ -120,6 +123,64 @@ func TestMaxPQRandom(t *testing.T) {
 	if  res != exp {
 		t.Errorf("%+v != %+v", res, exp)
 	}
+}
+
+func benchmarkMaxPQConcurrency(maxsize int, numthreads int, b *testing.B) {
+	pq := NewMaxPQ(maxsize+1)
+	mu := sync.Mutex{}
+	res := make(chan float64, numthreads)
+
+	// init pq to have some data
+	for i := 0; i < maxsize; i += 1 {
+		pq.Insert(rand.Int())
+	}
+
+	// modifying queue from `numthreads` simultaneusely
+	b.ResetTimer()
+	for i := 0; i < numthreads; i += 1 {
+		go (func(idx int) {
+			start := time.Now()
+			for j := 0; j < b.N; j += 1 {
+				key := rand.Int()
+				
+				mu.Lock()
+				pq.Insert(key)
+				if pq.Size() > maxsize {
+					pq.DelMax()
+				}
+				mu.Unlock()
+			}
+			elapsed := time.Since(start)
+			avg := float64(b.N)/elapsed.Seconds()
+			//fmt.Printf("thread %d: \telapsed %s, \ttotal %d, \tavg %.2f op/s\n", idx, elapsed, b.N, avg)
+
+			res <- avg
+		})(i)
+	}
+
+	total := 0.0
+	for i := 0; i < numthreads; i+= 1 {
+		avg := <- res
+		total += avg
+	}
+
+	fmt.Printf("total %d ops, %d ops/thread, performance %.2f op/s\n", b.N * numthreads, b.N, total)
+}
+
+func BenchmarkMaxPQConcurrency1m10threads(b *testing.B) {
+	benchmarkMaxPQConcurrency(1000000, 10, b)
+}
+
+func BenchmarkMaxPQConcurrency1m100threads(b *testing.B) {
+	benchmarkMaxPQConcurrency(1000000, 100, b)
+}
+
+func BenchmarkMaxPQConcurrency1m1kthreads(b *testing.B) {
+	benchmarkMaxPQConcurrency(1000000, 1000, b)
+}
+
+func BenchmarkMaxPQConcurrency1m10kthreads(b *testing.B) {
+	benchmarkMaxPQConcurrency(1000000, 10000, b)
 }
 
 func benchmarkMaxPQ(n int, b *testing.B) {
