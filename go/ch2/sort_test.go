@@ -407,3 +407,39 @@ func BenchmarkNativeSort50m(b *testing.B) {
 	benchmarkNativeSort(50000000, b)
 }
 
+func TestHeapSort(t *testing.T) {
+	input := make([]int, 1000)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+	input = append([]int{0}, input...)
+
+	s := HeapSort{}
+	s.Sort(SortableInt(input))
+
+	if !validateSort(SortableInt(input[1:])) {
+		t.Errorf("%+v is not sorted properly", input)
+	}
+}
+
+func benchmarkHeapSort(n int, b *testing.B) {
+	input := make([]int, n)
+	for i := range input {
+		input[i] = rand.Int()
+	}
+
+	s := HeapSort{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i += 1 {
+		s.Sort(SortableInt(input))
+	}
+}
+
+func BenchmarkHeapSort1m(b *testing.B) {
+	benchmarkHeapSort(1000000, b)
+}
+
+func BenchmarkHeapSort10m(b *testing.B) {
+	benchmarkHeapSort(10000000, b)
+}
