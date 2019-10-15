@@ -73,11 +73,14 @@ func (pq *indexMinPQ) Delete(i int) {
 	}
 
 	pq.keys[idx] = pq.keys[pq.n]
-	pq.index2key[i] = 0
 
 	lastkeyindex := pq.key2index[pq.n]
 	pq.index2key[lastkeyindex] = idx
 	pq.key2index[idx] = lastkeyindex
+	
+	pq.key2index[pq.n] = 0
+	pq.index2key[i] = 0
+
 	pq.n--
 
 	// restore order
