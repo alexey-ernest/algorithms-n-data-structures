@@ -21,8 +21,7 @@ func (st *SequentialSearchST) IsEmpty() bool {
 
 func (st *SequentialSearchST) Put(key, value string) {
 	n := st.first
-	for n != nil && n.key != key {
-		n = n.next
+	for n := st.first; n != nil && n.key != key; n = n.next {
 	}
 	if n != nil {
 		n.value = value
@@ -38,9 +37,7 @@ func (st *SequentialSearchST) Put(key, value string) {
 }
 
 func (st *SequentialSearchST) Get(key string) string {
-	n := st.first
-	for n != nil && n.key != key {
-		n = n.next
+	for n := st.first; n != nil && n.key != key; n = n.next {
 	}
 	if n == nil {
 		return nil
