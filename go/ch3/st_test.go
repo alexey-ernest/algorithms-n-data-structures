@@ -2,7 +2,7 @@ package ch3
 
 import "testing"
 
-func TestSequentialSTBasic(t *testing.T) {
+func TestSequentialSearchSTBasic(t *testing.T) {
 	st := SequentialSearchST{}
 	for i := 0; i < 10; i+=1 {
 		k := string('a' + i)
@@ -29,7 +29,7 @@ func TestSequentialSTBasic(t *testing.T) {
 	}
 
 	st.Delete(string('a'))
-	if st.Size != 9 {
+	if st.Size() != 9 {
 		t.Errorf("st size should be 9")
 	}
 	if st.Contains(string('a')) {

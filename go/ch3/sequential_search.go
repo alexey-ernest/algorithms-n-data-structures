@@ -1,5 +1,7 @@
 package ch3
 
+import "fmt"
+
 type node_ss struct {
 	key string
 	value string
@@ -16,12 +18,12 @@ func (st *SequentialSearchST) Size() int {
 }
 
 func (st *SequentialSearchST) IsEmpty() bool {
-	return st.n > 0
+	return st.n == 0
 }
 
 func (st *SequentialSearchST) Put(key, value string) {
-	n := st.first
-	for n := st.first; n != nil && n.key != key; n = n.next {
+	var n *node_ss
+	for n = st.first; n != nil && n.key != key; n = n.next {
 	}
 	if n != nil {
 		n.value = value
@@ -37,17 +39,21 @@ func (st *SequentialSearchST) Put(key, value string) {
 }
 
 func (st *SequentialSearchST) Get(key string) string {
-	for n := st.first; n != nil && n.key != key; n = n.next {
+	var n *node_ss
+	for n = st.first; n != nil && n.key != key; n = n.next {
 	}
 	if n == nil {
-		return nil
+		panic(fmt.Sprintf("st does not contain key %s", key))
 	}
 
 	return n.value
 }
 
 func (st *SequentialSearchST) Contains(key string) bool {
-	return st.Get(key) != nil
+	var n *node_ss
+	for n = st.first; n != nil && n.key != key; n = n.next {
+	}
+	return n != nil
 }
 
 func (st *SequentialSearchST) Delete(key string) {
@@ -58,7 +64,7 @@ func (st *SequentialSearchST) Delete(key string) {
 		n = n.next
 	}
 	if n == nil {
-		panic("ST does not contain key %s", key)
+		panic(fmt.Sprintf("ST does not contain key %s", key))
 	}
 
 	// removing the node
