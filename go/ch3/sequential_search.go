@@ -8,20 +8,27 @@ type node_ss struct {
 	next *node_ss
 }
 
-type SequentialSearchST struct {
+type sequentialSearchST struct {
 	first *node_ss
 	n int
 }
 
-func (st *SequentialSearchST) Size() int {
+func NewSequentialSearchST() sequentialSearchST {
+	return sequentialSearchST {
+		first: nil,
+		n: 0,
+	}
+}
+
+func (st *sequentialSearchST) Size() int {
 	return st.n
 }
 
-func (st *SequentialSearchST) IsEmpty() bool {
+func (st *sequentialSearchST) IsEmpty() bool {
 	return st.n == 0
 }
 
-func (st *SequentialSearchST) Put(key, value string) {
+func (st *sequentialSearchST) Put(key, value string) {
 	var n *node_ss
 	for n = st.first; n != nil && n.key != key; n = n.next {
 	}
@@ -38,7 +45,7 @@ func (st *SequentialSearchST) Put(key, value string) {
 	}
 }
 
-func (st *SequentialSearchST) Get(key string) string {
+func (st *sequentialSearchST) Get(key string) string {
 	var n *node_ss
 	for n = st.first; n != nil && n.key != key; n = n.next {
 	}
@@ -49,14 +56,14 @@ func (st *SequentialSearchST) Get(key string) string {
 	return n.value
 }
 
-func (st *SequentialSearchST) Contains(key string) bool {
+func (st *sequentialSearchST) Contains(key string) bool {
 	var n *node_ss
 	for n = st.first; n != nil && n.key != key; n = n.next {
 	}
 	return n != nil
 }
 
-func (st *SequentialSearchST) Delete(key string) {
+func (st *sequentialSearchST) Delete(key string) {
 	n := st.first
 	var prev *node_ss
 	for n != nil && n.key != key {
