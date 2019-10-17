@@ -82,13 +82,13 @@ func (st *binarySearchST) Delete(key string) {
 }
 
 func (st *binarySearchST) rank(key string) int {
-	l, r := 0, st.n
-	for l < r {
+	l, r := 0, st.n-1
+	for l <= r {
 		k := l + (r - l) / 2
 		if st.keys[k] == key {
 			return k
 		} else if st.keys[k] > key {
-			r = k
+			r = k-1
 		} else {
 			l = k+1
 		}
