@@ -128,6 +128,11 @@ func (st *binarySearchST) Keys(lo, hi string) []string {
 }
 
 func (st *binarySearchST) rank(key string) int {
+	// constant time checking for the bigger key
+	if st.n > 0 && st.keys[st.n-1] < key {
+		return st.n
+	}
+
 	l, r := 0, st.n-1
 	for l <= r {
 		k := l + (r - l) / 2
