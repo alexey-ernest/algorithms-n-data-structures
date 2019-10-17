@@ -8,3 +8,13 @@ type SymbolTable interface {
 	IsEmpty() bool
 	Contains(key string) bool
 }
+
+type OrderedSymbolTalbe interface {
+	SymbolTable
+	Min() string
+	Max() string
+	Floor(key string) string
+	Ceiling(key string) string
+	Select(rank int) string
+	Keys(lo, hi string) []string
+}

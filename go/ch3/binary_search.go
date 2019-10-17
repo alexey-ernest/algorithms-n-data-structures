@@ -81,6 +81,52 @@ func (st *binarySearchST) Delete(key string) {
 	st.n--
 }
 
+func (st *binarySearchST) Min() string {
+	if st.n == 0 {
+		panic("st is empty")
+	}
+
+	return st.keys[0]
+}
+
+func (st *binarySearchST) Max() string {
+	if st.n == 0 {
+		panic("st is empty")
+	}
+
+	return st.keys[st.n-1]
+}
+
+func (st *binarySearchST) Floor(key string) string {
+	i := st.rank(key)
+	if i < st.n && st.keys[i] == key {
+		return st.keys[i]
+	}
+	if i == 0 {
+		return ""
+	}
+
+	return st.keys[i-1]
+}
+
+func (st *binarySearchST) Ceiling(key string) string {
+	i := st.rank(key)
+	if i == st.n {
+		return ""
+	}
+
+	return st.keys[i]
+}
+
+func (st *binarySearchST) Select(rank int) string {
+	return st.keys[rank]
+}
+
+func (st *binarySearchST) Keys(lo, hi string) []string {
+	l, h := st.rank(lo), st.rank(hi)
+	return st.keys[l:h+1]
+}
+
 func (st *binarySearchST) rank(key string) int {
 	l, r := 0, st.n-1
 	for l <= r {

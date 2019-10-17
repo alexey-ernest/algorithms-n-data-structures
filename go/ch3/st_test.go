@@ -91,3 +91,85 @@ func TestBinarySearchSTBasic(t *testing.T) {
 		t.Errorf("st should not contain deleted key")
 	}
 }
+
+func TestBinarySearchSTMinMax(t *testing.T) {
+	st := NewBinarySearchST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		v := string(i)
+		st.Put(k, v)
+	}
+
+	min := string('a' + 1)
+	if st.Min() != min {
+		t.Errorf("min != %s", min)
+	}
+
+	max := string('a' + 10)
+	if st.Max() != max {
+		t.Errorf("max != %s", max)
+	}
+}
+
+func TestBinarySearchSTFloorCeiling(t *testing.T) {
+	st := NewBinarySearchST()
+	for i := 0; i < 10; i += 1 {
+		k := string('a' + 20 - 2*i)
+		v := string(i)
+		st.Put(k, v)
+	}
+
+	key := string('a' + 3)
+	fl := string('a' + 2)
+	ceiling := string('a' + 4)
+	if st.Floor(key) != fl {
+		t.Errorf("floor != %s", st.Floor(key))
+	}
+	if st.Ceiling(key) != ceiling {
+		t.Errorf("ceiling != %s", st.Ceiling(key))
+	}
+}
+
+func TestBinarySearchSTSelect(t *testing.T) {
+	st := NewBinarySearchST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		v := string(i)
+		st.Put(k, v)
+	}
+
+	key := string('a' + 3)
+	if st.Select(2) != key {
+		t.Errorf("element with rank=2 should be %s", key)
+	}
+}
+
+func TestBinarySearchSTKeys(t *testing.T) {
+	st := NewBinarySearchST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		v := string(i)
+		st.Put(k, v)
+	}
+
+	lo := string('a' + 3)
+	hi := string('a' + 6)
+	keys := st.Keys(lo, hi)
+	if len(keys) != 4 {
+		t.Errorf("keys len should equals 4")
+	}
+
+	if keys[0] != lo {
+		t.Errorf("first key should be %s", lo)
+	}
+
+	if keys[len(keys)-1] != hi {
+		t.Errorf("last key should be %s", hi)
+	}
+
+	for i := 1; i < len(keys); i += 1 {
+		if keys[i] < keys[i-1] {
+			t.Errorf("non-decreasing keys order validation failed")
+		}
+	}
+}
