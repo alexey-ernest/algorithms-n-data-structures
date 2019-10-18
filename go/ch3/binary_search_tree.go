@@ -223,11 +223,7 @@ func (t *binarySearchTreeST) Select(k int) string {
 }
 
 func (t *binarySearchTreeST) selectKey(n *nodeBST, k int) string {
-	lc := 0
-	if n.left != nil {
-		lc = n.left.n
-	}
-
+	lc := t.size(n.left)
 	if lc == k {
 		return n.key
 	}
@@ -252,14 +248,11 @@ func (t *binarySearchTreeST) rank(n *nodeBST, key string) int {
 		return 0
 	}
 
-	lc := 0
-	if n.left != nil {
-		lc = n.left.n
-	}
-
+	lc := t.size(n.left)
 	if n.key == key {
 		return lc
 	}
+
 	if n.key > key {
 		return t.rank(n.left, key)
 	} else {
