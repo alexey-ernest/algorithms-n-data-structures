@@ -200,3 +200,22 @@ func TestBSTBasic(t *testing.T) {
 		}
 	}
 }
+
+func TestBSTMinMax(t *testing.T) {
+	st := NewBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 9 - i)
+		v := string(i)
+		st.Put(k, v)
+	}
+
+	min := string('a')
+	if st.Min() != min {
+		t.Errorf("min %q != %q", st.Min(), min)
+	}
+
+	max := string('a' + 9)
+	if st.Max() != max {
+		t.Errorf("min %q != %q", st.Max(), max)
+	}
+}

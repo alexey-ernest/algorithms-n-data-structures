@@ -104,3 +104,35 @@ func (t *binarySearchTreeST) put(n *nodeBST, key string, value string) *nodeBST 
 
 	return n
 }
+
+func (t *binarySearchTreeST) Min() string {
+	if t.Size() == 0 {
+		panic("bst is empty")
+	}
+
+	return t.min(t.root)
+}
+
+func (t *binarySearchTreeST) min(n *nodeBST) string {
+	if n.left == nil {
+		return n.key
+	}
+
+	return t.min(n.left)
+}
+
+func (t *binarySearchTreeST) Max() string {
+	if t.Size() == 0 {
+		panic("bst is empty")
+	}
+
+	return t.max(t.root)
+}
+
+func (t *binarySearchTreeST) max(n *nodeBST) string {
+	if n.right == nil {
+		return n.key
+	}
+
+	return t.max(n.right)
+}
