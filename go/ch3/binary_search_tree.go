@@ -235,6 +235,34 @@ func (t *binarySearchTreeST) selectKey(n *nodeBST, k int) string {
 	if lc > k {
 		return t.selectKey(n.left, k)
 	} else {
-		return t.selectKey(n.right, k-n.left.n-1)
+		return t.selectKey(n.right, k - lc - 1)
+	}
+}
+
+func (t *binarySearchTreeST) Rank(key string) int {
+	if t.Size() == 0 {
+		panic("bst is empty")
+	}
+
+	return t.rank(t.root, key)
+}
+
+func (t *binarySearchTreeST) rank(n *nodeBST, key string) int {
+	if n == nil {
+		return 0
+	}
+
+	lc := 0
+	if n.left != nil {
+		lc = n.left.n
+	}
+
+	if n.key == key {
+		return lc
+	}
+	if n.key > key {
+		return t.rank(n.left, key)
+	} else {
+		return lc + 1 + t.rank(n.right, key)
 	}
 }

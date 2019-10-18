@@ -250,6 +250,11 @@ func TestBSTSelect(t *testing.T) {
 		st.Put(v, string(i))
 	}
 
+	exp0 := "A"
+	if st.Select(0) != exp0 {
+		t.Errorf("%q != %q", st.Select(0), exp0)
+	}
+
 	exp1 := "H"
 	if st.Select(3) != exp1 {
 		t.Errorf("%q != %q", st.Select(3), exp1)
@@ -261,3 +266,17 @@ func TestBSTSelect(t *testing.T) {
 	}
 }
 
+func TestBSTRank(t *testing.T) {
+	st := NewBST()
+	nodes := []string{"S", "E", "X", "A", "R", "C", "H", "M"}
+	for i, v := range nodes {
+		st.Put(v, string(i))
+	}
+
+	for i := range nodes {
+		k := st.Select(i)
+		if st.Rank(k) != i {
+			t.Errorf("rank of %q != %d", k, i)
+		}
+	}
+}
