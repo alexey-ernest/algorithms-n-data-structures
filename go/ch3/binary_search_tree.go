@@ -213,3 +213,28 @@ func (t *binarySearchTreeST) ceiling(n *nodeBST, key string) *nodeBST {
 	// if there is no key in the left, than next key bigger than left is a current root
 	return n
 }
+
+func (t *binarySearchTreeST) Select(k int) string {
+	if k < 0 || k >= t.Size() {
+		panic("index out of range")
+	}
+
+	return t.selectKey(t.root, k)
+}
+
+func (t *binarySearchTreeST) selectKey(n *nodeBST, k int) string {
+	lc := 0
+	if n.left != nil {
+		lc = n.left.n
+	}
+
+	if lc == k {
+		return n.key
+	}
+
+	if lc > k {
+		return t.selectKey(n.left, k)
+	} else {
+		return t.selectKey(n.right, k-n.left.n-1)
+	}
+}

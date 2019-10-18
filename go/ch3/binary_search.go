@@ -25,7 +25,7 @@ func (st *binarySearchST) Size() int {
 }
 
 func (st *binarySearchST) Get(key string) string {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i < st.n && st.keys[i] == key {
 		return st.values[i]
 	}
@@ -34,7 +34,7 @@ func (st *binarySearchST) Get(key string) string {
 }
 
 func (st *binarySearchST) Contains(key string) bool {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i < st.n && st.keys[i] == key {
 		return true
 	}
@@ -43,7 +43,7 @@ func (st *binarySearchST) Contains(key string) bool {
 }
 
 func (st *binarySearchST) Put(key, value string) {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i < st.n && st.keys[i] == key {
 		st.values[i] = value
 		return
@@ -66,7 +66,7 @@ func (st *binarySearchST) Put(key, value string) {
 }
 
 func (st *binarySearchST) Delete(key string) {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i == st.n || st.keys[i] != key {
 		panic(fmt.Sprintf("st does not contain key %s", key))
 	}
@@ -98,7 +98,7 @@ func (st *binarySearchST) Max() string {
 }
 
 func (st *binarySearchST) Floor(key string) string {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i < st.n && st.keys[i] == key {
 		return st.keys[i]
 	}
@@ -110,7 +110,7 @@ func (st *binarySearchST) Floor(key string) string {
 }
 
 func (st *binarySearchST) Ceiling(key string) string {
-	i := st.rank(key)
+	i := st.Rank(key)
 	if i == st.n {
 		return ""
 	}
@@ -123,11 +123,11 @@ func (st *binarySearchST) Select(rank int) string {
 }
 
 func (st *binarySearchST) Keys(lo, hi string) []string {
-	l, h := st.rank(lo), st.rank(hi)
+	l, h := st.Rank(lo), st.Rank(hi)
 	return st.keys[l:h+1]
 }
 
-func (st *binarySearchST) rank(key string) int {
+func (st *binarySearchST) Rank(key string) int {
 	// constant time checking for the bigger key
 	if st.n > 0 && st.keys[st.n-1] < key {
 		return st.n

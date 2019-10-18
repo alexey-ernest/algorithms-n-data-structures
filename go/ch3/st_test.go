@@ -243,3 +243,21 @@ func TestBSTCeiling(t *testing.T) {
 		t.Errorf("%q != %q", st.Ceiling("P"), ceilingP)
 	}
 }
+
+func TestBSTSelect(t *testing.T) {
+	st := NewBST()
+	for i, v := range []string{"S", "E", "X", "A", "R", "C", "H", "M"} {
+		st.Put(v, string(i))
+	}
+
+	exp1 := "H"
+	if st.Select(3) != exp1 {
+		t.Errorf("%q != %q", st.Select(3), exp1)
+	}
+
+	exp2 := "X"
+	if st.Select(7) != exp2 {
+		t.Errorf("%q != %q", st.Select(7), exp2)
+	}
+}
+

@@ -16,5 +16,6 @@ type OrderedSymbolTalbe interface {
 	Floor(key string) string
 	Ceiling(key string) string
 	Select(rank int) string
+	Rank(key string) int
 	Keys(lo, hi string) []string
 }
