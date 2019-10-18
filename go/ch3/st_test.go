@@ -219,3 +219,27 @@ func TestBSTMinMax(t *testing.T) {
 		t.Errorf("min %q != %q", st.Max(), max)
 	}
 }
+
+func TestBSTFloor(t *testing.T) {
+	st := NewBST()
+	for i, v := range []string{"S", "E", "X", "A", "R", "C", "H", "M"} {
+		st.Put(v, string(i))
+	}
+
+	floorG := "E"
+	if st.Floor("G") != floorG {
+		t.Errorf("%q != %q", st.Floor("G"), floorG)
+	}
+}
+
+func TestBSTCeiling(t *testing.T) {
+	st := NewBST()
+	for i, v := range []string{"S", "E", "X", "A", "R", "C", "H", "M"} {
+		st.Put(v, string(i))
+	}
+
+	ceilingP := "R"
+	if st.Ceiling("P") != ceilingP {
+		t.Errorf("%q != %q", st.Ceiling("P"), ceilingP)
+	}
+}
