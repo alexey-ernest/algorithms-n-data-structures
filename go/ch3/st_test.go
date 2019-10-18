@@ -280,3 +280,39 @@ func TestBSTRank(t *testing.T) {
 		}
 	}
 }
+
+func TestBSTDeleteMin(t *testing.T) {
+	st := NewBST()
+	nodes := []string{"S", "E", "X", "A", "R", "C", "H", "M"}
+	for i, v := range nodes {
+		st.Put(v, string(i))
+	}
+
+	st.DeleteMin()
+	if st.Size() != 7 {
+		t.Errorf("bst size should decrease by 1")
+	}
+
+	if st.Min() != "C" {
+		t.Errorf("bst min key should be C")
+	}	
+}
+
+func TestBSTDelete(t *testing.T) {
+	st := NewBST()
+	nodes := []string{"S", "E", "X", "A", "R", "C", "H", "M"}
+	for i, v := range nodes {
+		st.Put(v, string(i))
+	}
+
+	rnk := st.Rank("E")
+	st.Delete("E")
+	if st.Size() != 7 {
+		t.Errorf("bst size should decrease by 1")
+	}
+
+	if st.Rank("H") != rnk {
+		t.Errorf("bst node H should has rank=%d as E had before deletion", rnk)
+	}
+	
+}

@@ -110,12 +110,12 @@ func (t *binarySearchTreeST) Min() string {
 		panic("bst is empty")
 	}
 
-	return t.min(t.root)
+	return t.min(t.root).key
 }
 
-func (t *binarySearchTreeST) min(n *nodeBST) string {
+func (t *binarySearchTreeST) min(n *nodeBST) *nodeBST {
 	if n.left == nil {
-		return n.key
+		return n
 	}
 
 	return t.min(n.left)
@@ -126,12 +126,12 @@ func (t *binarySearchTreeST) Max() string {
 		panic("bst is empty")
 	}
 
-	return t.max(t.root)
+	return t.max(t.root).key
 }
 
-func (t *binarySearchTreeST) max(n *nodeBST) string {
+func (t *binarySearchTreeST) max(n *nodeBST) *nodeBST {
 	if n.right == nil {
-		return n.key
+		return n
 	}
 
 	return t.max(n.right)
@@ -259,3 +259,54 @@ func (t *binarySearchTreeST) rank(n *nodeBST, key string) int {
 		return lc + 1 + t.rank(n.right, key)
 	}
 }
+
+func (t *binarySearchTreeST) DeleteMin() {
+	t.root = t.deleteMin(t.root)
+}
+
+func (t *binarySearchTreeST) deleteMin(n *nodeBST) *nodeBST {
+	if n == nil {
+		return nil
+	}
+
+	if n.left == nil {
+		return n.right
+	}
+	
+	n.left = t.deleteMin(n.left)
+	n.n = t.size(n.left) + 1 + t.size(n.right)
+	return n
+}
+
+func (t *binarySearchTreeST) Delete(key string) {
+	t.root = t.delete(t.root, key)
+}
+
+func (t *binarySearchTreeST) delete(n *nodeBST, key string) *nodeBST {
+	if n == nil {
+		return nil
+	}
+
+	if n.key == key {
+		// replacing by successor (we can do similar with precedessor)
+		if n.left == nil {
+			return n.right
+		} else if n.right == nil {
+			return n.left
+		}
+
+		new := t.min(n.right)
+		new.right = t.deleteMin(n.right)
+		new.left = n.left		
+		n = new
+	} else if n.key > key {
+		n.left = t.delete(n.left, key)
+	} else {
+		n.right = t.delete(n.right, key)
+	}
+
+	// updating counter
+	n.n = t.size(n.left) + 1 + t.size(n.right)
+	return n
+}
+
