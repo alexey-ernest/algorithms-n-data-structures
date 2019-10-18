@@ -314,5 +314,24 @@ func TestBSTDelete(t *testing.T) {
 	if st.Rank("H") != rnk {
 		t.Errorf("bst node H should has rank=%d as E had before deletion", rnk)
 	}
-	
+}
+
+func TestBSTKeys(t *testing.T) {
+	st := NewBST()
+	nodes := []string{"S", "E", "X", "A", "R", "C", "H", "M"}
+	for i, v := range nodes {
+		st.Put(v, string(i))
+	}
+
+	keys := st.Keys("H", "X")
+	if len(keys) != 5 {
+		t.Errorf("keys len should equal to 5")
+	}
+
+	exp := []string{"H", "M", "R", "S", "X"}
+	for i := range keys {
+		if exp[i] != keys[i] {
+			t.Errorf("keys range validation failed")
+		}
+	}
 }

@@ -310,3 +310,32 @@ func (t *binarySearchTreeST) delete(n *nodeBST, key string) *nodeBST {
 	return n
 }
 
+func (t *binarySearchTreeST) Keys(lo, hi string) []string {
+	return t.keys(t.root, lo, hi)
+}
+
+func (t *binarySearchTreeST) keys(n *nodeBST, lo, hi string) []string {
+	if n == nil {
+		return nil
+	}
+
+	if n.key < lo {
+		return t.keys(n.right, lo, hi)
+	} else if n.key > hi {
+		return t.keys(n.left, lo, hi)
+	}
+
+	l := t.keys(n.left, lo, hi)
+	if l == nil {
+		l = make([]string, 0)
+	}
+
+	keys := append(l, n.key)
+
+	r := t.keys(n.right, lo, hi)
+	if r == nil {
+		r = make([]string, 0)
+	}
+	keys = append(keys, r...)
+	return keys
+}
