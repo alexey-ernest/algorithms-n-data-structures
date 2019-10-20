@@ -443,3 +443,100 @@ func TestRedBlackLeipzig1M(t *testing.T) {
     	t.Errorf("certification failed")
     }
 }
+
+func TestRedBlackMinMax(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 9 - i)
+		st.Put(k, i)
+	}
+
+	min := string('a')
+	if st.Min() != min {
+		t.Errorf("min %q != %q", st.Min(), min)
+	}
+
+	max := string('a' + 9)
+	if st.Max() != max {
+		t.Errorf("min %q != %q", st.Max(), max)
+	}
+}
+
+func TestRedBlackFloor(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i += 1 {
+		k := string('a' + 20 - 2*i)
+		st.Put(k, i)
+	}
+
+	keymiss := string('a' + 3)
+	flmiss := string('a' + 2)
+	if st.Floor(keymiss) != flmiss {
+		t.Errorf("floor != %s", st.Floor(keymiss))
+	}
+
+	keyhit := string('a' + 10)
+	if st.Floor(keyhit) != keyhit {
+		t.Errorf("floor != %s", st.Floor(keyhit))
+	}
+}
+
+func TestRedBlackCeiling(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i += 1 {
+		k := string('a' + 20 - 2*i)
+		st.Put(k, i)
+	}
+
+	keymiss := string('a' + 3)
+	clmiss := string('a' + 4)
+	if st.Ceiling(keymiss) != clmiss {
+		t.Errorf("ceiling != %s", st.Ceiling(keymiss))
+	}
+
+	keyhit := string('a' + 10)
+	if st.Ceiling(keyhit) != keyhit {
+		t.Errorf("ceiling != %s", st.Ceiling(keyhit))
+	}
+}
+
+func TestRedBlackSelect(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		st.Put(k, i)
+	}
+
+	key := string('a' + 3)
+	if st.Select(2) != key {
+		t.Errorf("element with rank=2 should be %s", key)
+	}
+
+	key = string('a' + 10)
+	if st.Select(9) != key {
+		t.Errorf("element with rank=9 should be %s", key)
+	}
+}
+
+func TestRedBlackRank(t *testing.T) {
+	st := NewRedBlackBST()
+	nodes := []string{"S", "E", "X", "A", "R", "C", "H", "M"}
+	for i, v := range nodes {
+		st.Put(v, i)
+	}
+
+	for i := range nodes {
+		k := st.Select(i)
+		if st.Rank(k) != i {
+			t.Errorf("rank of %q != %d", k, i)
+		}
+	}
+
+	if st.Rank("Y") != len(nodes) {
+		t.Errorf("rank of new maximum should equal to the number of nodes in the tree")
+	}
+
+	if st.Rank("Y") != st.Rank("Z") {
+		t.Errorf("rank of new maximum should not depend on the new maximum concrete value")
+	}
+}

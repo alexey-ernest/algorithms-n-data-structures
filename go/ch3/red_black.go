@@ -43,10 +43,14 @@ func (t *redBlackBST) Contains(key string) bool {
 	return t.get(t.root, key) != nil
 }
 
-func (t *redBlackBST) Get(key string) int {
+func (t *redBlackBST) panicIfEmpty() {
 	if t.IsEmpty() {
 		panic("Red Black BST is empty")
 	}
+}
+
+func (t *redBlackBST) Get(key string) int {
+	t.panicIfEmpty()
 
 	x := t.get(t.root, key)
 	if x == nil {
@@ -240,4 +244,144 @@ func (t *redBlackBST) isBalanced(n *nodeRedBlack) (bool, int) {
 	}
 
 	return lb && rb && l == r, b
+}
+
+func (t *redBlackBST) Min() string {
+	t.panicIfEmpty()
+	return t.min(t.root).key
+}
+
+func (t *redBlackBST) min(n *nodeRedBlack) *nodeRedBlack {
+	if n.left == nil {
+		return n
+	}
+
+	return t.min(n.left)
+}
+
+func (t *redBlackBST) Max() string {
+	t.panicIfEmpty()
+	return t.max(t.root).key
+}
+
+func (t *redBlackBST) max(n *nodeRedBlack) *nodeRedBlack {
+	if n.right == nil {
+		return n
+	}
+
+	return t.max(n.right)
+}
+
+func (t *redBlackBST) Floor(key string) string {
+	t.panicIfEmpty()
+
+	floor := t.floor(t.root, key)
+	if floor == nil {
+		panic(fmt.Sprintf("there are no keys <= %q", key))
+	}
+
+	return floor.key
+}
+
+func (t *redBlackBST) floor(n *nodeRedBlack, key string) *nodeRedBlack {
+	if n == nil {
+		// search miss
+		return nil
+	}
+
+	if n.key == key {
+		// search hit
+		return n
+	}
+
+	if n.key > key {
+		// floor must be in the left sub-tree
+		return t.floor(n.left, key)
+	}
+
+	// key could be in the right sub-tree, if not, using current root
+	floor := t.floor(n.right, key)
+	if floor != nil {
+		return floor
+	}
+
+	return n
+}
+
+func (t *redBlackBST) Ceiling(key string) string {
+	t.panicIfEmpty()
+
+	ceiling := t.ceiling(t.root, key)
+	if ceiling == nil {
+		panic(fmt.Sprintf("there are no keys >= %q", key))
+	}
+
+	return ceiling.key
+}
+
+func (t *redBlackBST) ceiling(n *nodeRedBlack, key string) *nodeRedBlack {
+	if n == nil {
+		// search miss
+		return nil
+	}
+
+	if n.key == key {
+		// search hit
+		return n
+	}
+
+	if n.key < key {
+		// ceiling must be in the right sub-tree
+		return t.ceiling(n.right, key)
+	}
+
+	// the key could be in the left sub-tree, if not, using current root
+	ceiling := t.ceiling(n.left, key)
+	if ceiling != nil {
+		return ceiling
+	}
+
+	return n
+}
+
+func (t *redBlackBST) Select(k int) string {
+	if k < 0 || k >= t.Size() {
+		panic("index out of range")
+	}
+
+	return t.selectNode(t.root, k).key
+}
+
+func (t *redBlackBST) selectNode(n *nodeRedBlack, k int) *nodeRedBlack {
+	if t.size(n.left) == k {
+		return n
+	}
+
+	if t.size(n.left) > k {
+		return t.selectNode(n.left, k)
+	}
+
+	k = k - t.size(n.left) - 1
+	return t.selectNode(n.right, k)
+}
+
+func (t *redBlackBST) Rank(key string) int {
+	t.panicIfEmpty()
+	return t.rank(t.root, key)
+}
+
+func (t *redBlackBST) rank(n *nodeRedBlack, key string) int {
+	if n == nil {
+		return 0
+	}
+	
+	if n.key == key {
+		return t.size(n.left)
+	}
+
+	if n.key > key {
+		return t.rank(n.left, key)
+	}
+
+	return t.size(n.left) + 1 + t.rank(n.right, key)
 }
