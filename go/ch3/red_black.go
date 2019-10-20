@@ -107,7 +107,7 @@ func (t *redBlackBST) rotateLeft(n *nodeRedBlack) *nodeRedBlack {
 
 	n.n = t.size(n.left) + 1 + t.size(n.right)
 	x.n = t.size(x.left) + 1 + t.size(x.right)
-	
+
 	return x
 }
 
@@ -195,10 +195,5 @@ func (t *redBlackBST) height(n *nodeRedBlack) int {
 		height = rheight
 	}
 
-	if !n.isRed {
-		// black height
-		height += 1
-	}
-
-	return height
+	return height + 1
 }

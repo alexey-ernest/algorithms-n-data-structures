@@ -1,6 +1,11 @@
 package ch3
 
-import "testing"
+import (
+	"testing"
+	"bufio"
+	"os"
+	"strings"
+)
 
 func TestSequentialSearchSTBasic(t *testing.T) {
 	st := NewSequentialSearchST()
@@ -387,4 +392,50 @@ func TestRedBlackHeight(t *testing.T) {
 	if height < 10 || height > 20 {
 		t.Errorf("red black bst height should be in range lgN <= height <= 2*lgN, in our case from 10 to 20, but we got %d", height)
 	}
+}
+
+func TestRedBlackLeipzig1M(t *testing.T) {
+
+	file, err := os.Open("leipzig1M.txt")
+    if err != nil {
+        panic(err)
+    }
+    defer file.Close()
+
+    scanner := bufio.NewScanner(file)
+    st := NewRedBlackBST()
+    n := 0
+    for scanner.Scan() {
+        line := scanner.Text()
+        
+        words := strings.Fields(line)
+        n += len(words)
+        
+        for _, w := range words {
+        	if !st.Contains(w) {
+        		st.Put(w, 1)
+        	} else {
+        		st.Put(w, st.Get(w) + 1)
+        	}
+        }
+    }
+
+    allwords := 622098
+    if n != allwords {
+    	t.Errorf("number of all words should be %d, got %d", allwords, n)
+    }
+
+    m := 69321
+    if st.Size() != m {
+		t.Errorf("size should equals %d, got %d", m, st.Size())
+	}
+
+	height := st.Height()
+	if height < 16 || height > 32 {
+		t.Errorf("red black bst height should be in range lgN <= height <= 2*lgN, in our case from 16 to 32, but we got %d", height)
+	}
+
+    if err := scanner.Err(); err != nil {
+        panic(err)
+    }
 }
