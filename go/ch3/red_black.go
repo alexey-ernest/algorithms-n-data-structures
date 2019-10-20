@@ -197,3 +197,47 @@ func (t *redBlackBST) height(n *nodeRedBlack) int {
 
 	return height + 1
 }
+
+func (t *redBlackBST) IsRedBlack() bool {
+	balanced, _ := t.isBalanced(t.root)
+	return balanced && t.is23(t.root)
+}
+
+func (t *redBlackBST) is23(n *nodeRedBlack) bool {
+	if n == nil {
+		return true
+	}
+
+	if t.isRed(n.right) {
+		// it should has only left leaning red links
+		return false
+	}
+
+	if t.isRed(n) && t.isRed(n.left) {
+		// no node should be connected by two red links
+		return false
+	}
+
+	return t.is23(n.left) && t.is23(n.right)
+}
+
+func (t *redBlackBST) isBalanced(n *nodeRedBlack) (bool, int) {
+	if n == nil {
+		// null node is black by default
+		return true, 1
+	}
+
+	lb, l := t.isBalanced(n.left)
+	rb, r := t.isBalanced(n.right)
+
+	b := l
+	if r > l {
+		b = r
+	}
+
+	if !t.isRed(n) {
+		b += 1
+	}
+
+	return lb && rb && l == r, b
+}

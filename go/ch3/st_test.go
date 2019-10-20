@@ -420,6 +420,10 @@ func TestRedBlackLeipzig1M(t *testing.T) {
         }
     }
 
+    if err := scanner.Err(); err != nil {
+        panic(err)
+    }
+
     allwords := 622098
     if n != allwords {
     	t.Errorf("number of all words should be %d, got %d", allwords, n)
@@ -435,7 +439,7 @@ func TestRedBlackLeipzig1M(t *testing.T) {
 		t.Errorf("red black bst height should be in range lgN <= height <= 2*lgN, in our case from 16 to 32, but we got %d", height)
 	}
 
-    if err := scanner.Err(); err != nil {
-        panic(err)
+    if !st.IsRedBlack() {
+    	t.Errorf("certification failed")
     }
 }
