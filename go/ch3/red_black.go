@@ -374,7 +374,7 @@ func (t *redBlackBST) rank(n *nodeRedBlack, key string) int {
 	if n == nil {
 		return 0
 	}
-	
+
 	if n.key == key {
 		return t.size(n.left)
 	}
@@ -384,4 +384,40 @@ func (t *redBlackBST) rank(n *nodeRedBlack, key string) int {
 	}
 
 	return t.size(n.left) + 1 + t.rank(n.right, key)
+}
+
+func (t *redBlackBST) Keys(lo, hi string) []string {
+	if lo < t.Min() || hi > t.Max() {
+		panic("keys out of range")
+	}
+
+	return t.keys(t.root, lo, hi)
+}
+
+func (t *redBlackBST) keys(n *nodeRedBlack, lo, hi string) []string {
+	if n == nil {
+		return nil
+	}
+
+	if n.key < lo {
+		return t.keys(n.right, lo, hi)
+	} else if n.key > hi {
+		return t.keys(n.left, lo, hi)
+	}
+
+	l := t.keys(n.left, lo, hi)
+	r := t.keys(n.right, lo, hi)
+	
+	var keys []string
+	if l != nil {
+		keys = append(l, n.key)
+	} else {
+		keys = []string{n.key}
+	}
+
+	if r != nil {
+		keys = append(keys, r...)
+	}
+
+	return keys
 }

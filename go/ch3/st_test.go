@@ -540,3 +540,33 @@ func TestRedBlackRank(t *testing.T) {
 		t.Errorf("rank of new maximum should not depend on the new maximum concrete value")
 	}
 }
+
+func TestRedBlackKeys(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		st.Put(k, i)
+	}
+
+	lo := string('a' + 3)
+	hi := string('a' + 6)
+	keys := st.Keys(lo, hi)
+	if len(keys) != 4 {
+		t.Errorf("keys len should equals 4, %+v", keys)
+	}
+
+	if keys[0] != lo {
+		t.Errorf("first key should be %s", lo)
+	}
+
+	if keys[len(keys)-1] != hi {
+		t.Errorf("last key should be %s", hi)
+	}
+
+	for i := 1; i < len(keys); i += 1 {
+		if keys[i] < keys[i-1] {
+			t.Errorf("non-decreasing keys order validation failed")
+		}
+	}
+}
+
