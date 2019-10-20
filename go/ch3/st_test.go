@@ -335,3 +335,56 @@ func TestBSTKeys(t *testing.T) {
 		}
 	}
 }
+
+func TestRedBlackEmpty(t *testing.T) {
+	rb := NewRedBlackBST()
+	if rb.Size() != 0 || !rb.IsEmpty() {
+		t.Errorf("Red Black BST should be empty")
+	}
+}
+
+func TestRedBlackBasic(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + i)
+		st.Put(k, i)
+	}
+
+	if st.Size() != 10 {
+		t.Errorf("size should equals 10, got %d", st.Size())
+	}
+	if st.IsEmpty() {
+		t.Errorf("st should not be empty")	
+	}
+
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + i)
+		if !st.Contains(k) {
+			t.Errorf("st should contain the key %q", k)
+		}
+		if st.Get(k) != i {
+			t.Errorf("value %s != %s", st.Get(k), i)
+		}
+	}
+}
+
+func TestRedBlackHeight(t *testing.T) {
+	st := NewRedBlackBST()
+	n := 1024
+	for i := 0; i < n; i+=1 {
+		k := string(i)
+		st.Put(k, i)
+	}
+
+	if st.Size() != n {
+		t.Errorf("size should equals %d, got %d", n, st.Size())
+	}
+	if st.IsEmpty() {
+		t.Errorf("st should not be empty")	
+	}
+
+	height := st.Height()
+	if height < 10 || height > 20 {
+		t.Errorf("red black bst height should be in range lgN <= height <= 2*lgN, in our case from 10 to 20, but we got %d", height)
+	}
+}
