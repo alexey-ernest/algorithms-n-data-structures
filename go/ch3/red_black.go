@@ -91,14 +91,14 @@ func (t *redBlackBST) flipColors(n *nodeRedBlack) {
 
 	// making children black
 	if n.left != nil {
-		n.left.isRed = false
+		n.left.isRed = !n.left.isRed
 	}
 	if n.right != nil {
-		n.right.isRed = false
+		n.right.isRed = !n.right.isRed
 	}
 
 	// making node red
-	n.isRed = true
+	n.isRed = !n.isRed
 }
 
 func (t *redBlackBST) rotateLeft(n *nodeRedBlack) *nodeRedBlack {
@@ -421,3 +421,61 @@ func (t *redBlackBST) keys(n *nodeRedBlack, lo, hi string) []string {
 
 	return keys
 }
+
+func (t *redBlackBST) makeLeftRed(n *nodeRedBlack) *nodeRedBlack {
+	// assuming that n.left and n.left.left are black and n is red
+	t.flipColors(n)
+	// now n is black and both left and right are red
+
+	// fixing red black invariat that no node can be connected with two red links
+	if t.isRed(n.right.left) {
+		n.right = t.rotateRight(n.right)
+		// now n.right and n.right.right are red, fixing that by rotating n
+		n = t.rotateLeft(n) 
+		// now n.right, n.left and n.left.left are red
+	}
+
+	return n
+}
+
+func (t *redBlackBST) DeleteMin() {
+	t.panicIfEmpty()
+
+	if !t.isRed(t.root.left) && !t.isRed(t.root.right) {
+		// making root red temporarily to fit invariant required for makeLeftRed method
+		t.root.isRed = true
+	}
+	t.root = t.deleteMin(t.root)
+	if !t.IsEmpty() {
+		t.root.isRed = false
+	}
+}
+
+func (t *redBlackBST) deleteMin(n *nodeRedBlack) *nodeRedBlack {
+	if n.left == nil {
+		// we've reachet the least leave of the tree
+		return nil
+	}
+
+	// making current node a part of 3 or 4 node by moving red link to the left
+	if !t.isRed(n.left) && !t.isRed(n.left.left) {
+		n = t.makeLeftRed(n)
+	}
+
+	n.left = t.deleteMin(n.left)
+
+	// we have to restore balance of the tree moving from bottom to top now
+	if t.isRed(n.right) {
+		n = t.rotateLeft(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.left.left) {
+		n = t.rotateRight(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.right) {
+		t.flipColors(n)
+	}
+
+	n.n = t.size(n.left) + 1 + t.size(n.right)
+	return n
+}
+

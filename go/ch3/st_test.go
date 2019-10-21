@@ -439,9 +439,9 @@ func TestRedBlackLeipzig1M(t *testing.T) {
 		t.Errorf("red black bst height should be in range lgN <= height <= 2*lgN, in our case from 16 to 32, but we got %d", height)
 	}
 
-    if !st.IsRedBlack() {
-    	t.Errorf("certification failed")
-    }
+	if !st.IsRedBlack() {
+		t.Errorf("certification failed")
+	}
 }
 
 func TestRedBlackMinMax(t *testing.T) {
@@ -570,3 +570,23 @@ func TestRedBlackKeys(t *testing.T) {
 	}
 }
 
+func TestRedBlackDeleteMin(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + 10 - i)
+		st.Put(k, i)
+	}
+
+	st.DeleteMin()
+	if st.Size() != 9 {
+		t.Errorf("tree size should shrink")
+	}
+
+	if st.Contains(string('a' + 1)) {
+		t.Errorf("minimum element should be removed from the tree")
+	}
+
+	if !st.IsRedBlack() {
+		t.Errorf("certification failed")
+	}
+}
