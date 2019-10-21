@@ -590,3 +590,24 @@ func TestRedBlackDeleteMin(t *testing.T) {
 		t.Errorf("certification failed")
 	}
 }
+
+func TestRedBlackDeleteMax(t *testing.T) {
+	st := NewRedBlackBST()
+	for i := 0; i < 10; i+=1 {
+		k := string('a' + i)
+		st.Put(k, i)
+	}
+
+	st.DeleteMax()
+	if st.Size() != 9 {
+		t.Errorf("tree size should shrink")
+	}
+
+	if st.Contains(string('a' + 9)) {
+		t.Errorf("minimum element should be removed from the tree")
+	}
+
+	if !st.IsRedBlack() {
+		t.Errorf("certification failed")
+	}
+}

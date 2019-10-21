@@ -479,3 +479,51 @@ func (t *redBlackBST) deleteMin(n *nodeRedBlack) *nodeRedBlack {
 	return n
 }
 
+func (t *redBlackBST) makeRightRed(n *nodeRedBlack) *nodeRedBlack {
+	// assuming n is red and n.right and n.right.left are black
+	t.flipColors(n)
+	if !t.isRed(n.left.left) {
+		n = t.rotateRight(n)
+	}
+	return n
+}
+
+func (t *redBlackBST) DeleteMax() {
+	t.panicIfEmpty()
+	if !t.isRed(t.root.left) && !t.isRed(t.root.right) {
+		t.root.isRed = true
+	}
+	t.root = t.deleteMax(t.root)
+	if !t.IsEmpty() {
+		t.root.isRed = false;
+	}
+}
+
+func (t *redBlackBST) deleteMax(n *nodeRedBlack) *nodeRedBlack {
+	if t.isRed(n.left) {
+		n = t.rotateRight(n)
+	}
+	if n.right == nil {
+		return nil
+	}
+
+	if !t.isRed(n.right) && !t.isRed(n.right.left) {
+		n = t.makeRightRed(n)
+	}
+
+	n.right = t.deleteMax(n.right)
+
+	// balancing back on the way from bottom to top
+	if t.isRed(n.right) {
+		n = t.rotateLeft(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.left.left) {
+		n = t.rotateRight(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.right) {
+		t.flipColors(n)
+	}
+
+	n.n = t.size(n.left) + 1 + t.size(n.right)
+	return n
+}
