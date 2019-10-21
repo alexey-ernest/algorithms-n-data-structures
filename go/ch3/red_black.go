@@ -527,3 +527,59 @@ func (t *redBlackBST) deleteMax(n *nodeRedBlack) *nodeRedBlack {
 	n.n = t.size(n.left) + 1 + t.size(n.right)
 	return n
 }
+
+func (t *redBlackBST) Delete(key string) {
+	t.panicIfEmpty()
+	if !t.isRed(t.root.left) && !t.isRed(t.root.right) {
+		t.root.isRed = true
+	}
+	t.root = t.delete(t.root, key)
+	if !t.IsEmpty() {
+		t.root.isRed = false;
+	}
+}
+
+func (t *redBlackBST) delete(n *nodeRedBlack, key string) *nodeRedBlack {
+	if n.key > key {
+		// looking into the left sub-tree
+		if !t.isRed(n.left) && !t.isRed(n.left.left) {
+			n = t.makeLeftRed(n)
+		}
+		n.left = t.delete(n.left, key)
+	} else {
+		// checking current node and right sub-tree if required
+		if t.isRed(n.left) {
+			n = t.rotateRight(n)
+		}
+		if n.key == key && n.right == nil {
+			return nil
+		}
+
+		if !t.isRed(n.right) && !t.isRed(n.right.left) {
+			n = t.makeRightRed(n)
+		}
+
+		if n.key == key {
+			rightMin := t.min(n.right)
+			n.key = rightMin.key
+			n.value = rightMin.value
+			n.right = t.deleteMin(n.right)
+		} else {
+			n.right = t.delete(n.right, key)
+		}
+	}
+
+	// balance
+	if t.isRed(n.right) {
+		n = t.rotateLeft(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.left.left) {
+		n = t.rotateRight(n)
+	}
+	if t.isRed(n.left) && t.isRed(n.right) {
+		t.flipColors(n)
+	}
+
+	n.n = t.size(n.left) + 1 + t.size(n.right)
+	return n
+}
