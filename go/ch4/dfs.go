@@ -4,21 +4,21 @@ type depthFirstPaths struct{
 	adj [][]int
 	source int
 	marked []bool
-	pathTo []int
+	edgeTo []int
 }
 
 func NewDepthFirstPaths(adj [][]int, source int) *depthFirstPaths {
 	marked := make([]bool, len(adj))
-	pathTo := make([]int, len(adj))
-	for i := range pathTo {
-		pathTo[i] = -1
+	edgeTo := make([]int, len(adj))
+	for i := range edgeTo {
+		edgeTo[i] = -1
 	}
 
 	dfp := &depthFirstPaths{
 		adj: adj,
 		source: source,
 		marked: marked,
-		pathTo: pathTo,
+		edgeTo: edgeTo,
 	}
 
 	dfp.dfs(source)
@@ -32,7 +32,7 @@ func (this *depthFirstPaths) dfs(v int) {
 		if this.marked[w] {
 			continue
 		}
-		this.pathTo[w] = v
+		this.edgeTo[w] = v
 		this.dfs(w)
 	}
 }
@@ -47,7 +47,7 @@ func (this *depthFirstPaths) PathTo(v int) []int {
 	}
 
 	path := make([]int, 0)
-	for w := v; w >= 0; w = this.pathTo[w] {
+	for w := v; w >= 0; w = this.edgeTo[w] {
 		path = append(path, w)
 	}
 
