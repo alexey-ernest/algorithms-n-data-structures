@@ -1,7 +1,6 @@
 package ch4
 
 func IsAcyclic(adj [][]int) bool {
-
 	marked := make([]bool, len(adj))
 	acyclic := true
 
